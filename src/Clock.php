@@ -169,7 +169,7 @@ class Clock
                 $image,
                 $this->clock->getFontSize(),
                 $this->clock->getFontAngle(),
-                imagecolorallocate($image, $fontColors[0], $fontColors[1], $fontColors[2]),
+                imagecolorallocate($image, $fontColors[0] ?? 0, $fontColors[1] ?? 0, $fontColors[2] ?? 0),
                 $this->clock->getFontFilePath(),
                 $text,
                 $this->clock->getSpacing(),
