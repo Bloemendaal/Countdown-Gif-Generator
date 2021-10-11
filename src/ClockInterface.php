@@ -53,17 +53,17 @@ interface ClockInterface
     /**
      * @return integer size of font
      */
-    public function getFontsize();
+    public function getFontSize();
 
     /**
      * @return integer font start x
      */
-    public function getFontx();
+    public function getPaddingHorizontal();
 
     /**
      * @return integer font start y
      */
-    public function getFonty();
+    public function getPaddingVertical();
 
     /**
      * @return array [red, green, blue]
@@ -73,7 +73,7 @@ interface ClockInterface
     /**
      * @return integer font angle
      */
-    public function getFontangle();
+    public function getFontAngle();
 
     /**
      * @return string background image file path (set to boolean false to use color)
