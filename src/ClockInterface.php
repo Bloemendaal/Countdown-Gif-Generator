@@ -66,19 +66,9 @@ interface ClockInterface
     public function getFonty();
 
     /**
-     * @return integer font red
+     * @return array [red, green, blue]
      */
-    public function getFontr();
-
-    /**
-     * @return integer font green
-     */
-    public function getFontg();
-
-    /**
-     * @return integer font blue
-     */
-    public function getFontb();
+    public function getFontColor();
 
     /**
      * @return integer font angle
