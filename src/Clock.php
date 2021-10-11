@@ -1,6 +1,6 @@
 <?php
 
-namespace mattbarber\CountdownClock;
+namespace Mattbarber\CountdownClock;
 
 /**
  * Countdown gif generator
@@ -15,8 +15,9 @@ namespace mattbarber\CountdownClock;
  * @updated : 4th November 2016
  *
  * @contributors : Tom Power
- * */
-class Clock {
+ */
+class Clock
+{
 
     private $dates;
     private $clock;
@@ -31,7 +32,7 @@ class Clock {
     {
         //Convert the deadline to a date time and assign top property
         $this->dates = new \stdClass();
-        $this->dates->deadline = $clock->getdeadlineDateTime();
+        $this->dates->deadline = $clock->getDeadlineDateTime();
         $this->dates->deadline->setTimeZone(new \DateTimeZone($clock->getTimeZone()));
 
         $this->dates->now = new \DateTime(date('r', time()));
@@ -60,7 +61,7 @@ class Clock {
      * @param char  $char
      *
      * @return float
-    **/
+     **/
     private function getOffset($char)
     {
         $width = $this->getWidth($char);
@@ -73,7 +74,7 @@ class Clock {
      * @param char $char    The character to check
      *
      * @return array
-    **/
+     **/
     private function getBBox($char)
     {
         return imagettfbbox(
@@ -90,7 +91,7 @@ class Clock {
      * @param char $char
      *
      * @return int
-    **/
+     **/
     private function getWidth($char)
     {
         $bbox = $this->getBBox($char);
@@ -103,7 +104,7 @@ class Clock {
      * @param char $char
      *
      * @return int
-    **/
+     **/
     private function getHeight($char)
     {
         $bbox = imagettfbbox($this->clock->getFontsize() + $this->clock->getFonty(), $this->clock->getFontangle(), $this->clock->getFontFilePath(), $char);
@@ -113,7 +114,8 @@ class Clock {
     /**
      *  Generates the image using the given design settings and the GifEncoder plugin
      * */
-    public function generateImage() {
+    public function generateImage()
+    {
         //Some overall variables
         $frames = [];
         $delays = [];
@@ -214,13 +216,14 @@ class Clock {
      * @param char      $separator          The sepeartor for the date parts
      * @param int       $separatorSpacing   The spacing around the separator
      *
-    **/
-    function imagettftextSp($image, $size, $angle, $x, $y, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0) {
+     **/
+    function imagettftextSp($image, $size, $angle, $x, $y, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0)
+    {
         if ($spacing === 0 && $separatorSpacing === 0) {
             imagettftext($image, $size, $angle, $x, $y, $color, $font, $text);
         } else {
             $thisX = $x;
-            foreach(str_split($text) as $i => $char) {
+            foreach (str_split($text) as $i => $char) {
                 // increment x by the offset for the given character
                 $thisX += $this->offsets[$char];
                 // then write that specific character to the image
@@ -242,7 +245,7 @@ class Clock {
      * @param char      $separator  The separator symbol
      *
      * @return bool
-    **/
+     **/
     function isSeperatorSpacing($text, $i, $separator)
     {
         return $this->getNextChar($text, $i) === $separator || $text[$i] === $separator;
@@ -255,10 +258,9 @@ class Clock {
      * @param int       $i          The current index
      *
      * @return char
-    **/
+     **/
     function getNextChar($text, $i)
     {
         return $i + 1 < strlen($text) ? $text[$i + 1] : null;
     }
-
 }
