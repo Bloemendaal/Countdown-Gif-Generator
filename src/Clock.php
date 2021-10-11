@@ -64,10 +64,8 @@ class Clock
      * Get an offset used for writing a specific character
      *
      * @param char  $char
-     *
-     * @return float
      **/
-    private function getOffset($char)
+    private function getOffset($char): float
     {
         $width = $this->getWidth($char);
         return ($this->fixedWidth - $width) / 2;
@@ -77,10 +75,8 @@ class Clock
      * Return the bounding box of a character
      *
      * @param char $char    The character to check
-     *
-     * @return array
      **/
-    private function getBBox($char)
+    private function getBBox($char): array
     {
         return imagettfbbox(
             $this->clock->getFontSize(),
@@ -94,10 +90,8 @@ class Clock
      * Return the width of the bounding box
      *
      * @param char $char
-     *
-     * @return int
      **/
-    private function getWidth($char)
+    private function getWidth($char): int
     {
         $bbox = $this->getBBox($char);
         return $bbox[2] - $bbox[0];
@@ -107,10 +101,8 @@ class Clock
      * Return the height of the bounding box
      *
      * @param char $char
-     *
-     * @return int
      **/
-    private function getHeight($char, $offset = 0)
+    private function getHeight($char, $offset = 0): int
     {
         $bbox = imagettfbbox($this->clock->getFontSize() + $offset * 2, $this->clock->getFontAngle(), $this->clock->getFontFilePath(), $char);
         return $bbox[1] - $bbox[7];
@@ -119,7 +111,7 @@ class Clock
     /**
      *  Generates the image using the given design settings and the GifEncoder plugin
      * */
-    public function generateImage()
+    public function generateImage(): void
     {
         //Some overall variables
         $frames = [];
@@ -132,7 +124,7 @@ class Clock
         $separator = $this->clock->getSeparator();
 
         //Count through our frames
-        for ($i = 0; $i <= 60; $i++) {
+        for ($i = 0; $i <= $this->clock->getAmountOfSeconds(); $i++) {
 
             $text = '';
             $interval = $dates->deadline->diff($dates->now);
@@ -153,7 +145,7 @@ class Clock
             }
 
             //create a new image resource
-            if (false !== ($filename = $this->clock->getBackgroundImageFilePath())) {
+            if (null !== ($filename = $this->clock->getBackgroundImageFilePath())) {
                 $image = \imagecreatefrompng($filename);
             } else {
                 /*
@@ -224,7 +216,7 @@ class Clock
      * @param int       $separatorSpacing   The spacing around the separator
      *
      **/
-    function imagettftextSp($image, $size, $angle, $x, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0)
+    function imagettftextSp($image, $size, $angle, $x, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0): void
     {
         $y = round(imagesy($image) / 2 + $this->getHeight('0123456789' . $this->clock->getSeparator()) / 2) - 1;
 
@@ -248,10 +240,8 @@ class Clock
      * @param string    $text       Text string
      * @param int       $i          The current index
      * @param char      $separator  The separator symbol
-     *
-     * @return bool
      **/
-    function isSeperatorSpacing($text, $i, $separator)
+    function isSeperatorSpacing($text, $i, $separator): bool
     {
         return $this->getNextChar($text, $i) === $separator || $text[$i] === $separator;
     }
@@ -264,7 +254,7 @@ class Clock
      *
      * @return char
      **/
-    function getNextChar($text, $i)
+    function getNextChar($text, $i): ?string
     {
         return $i + 1 < strlen($text) ? $text[$i + 1] : null;
     }

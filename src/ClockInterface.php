@@ -2,87 +2,46 @@
 
 namespace Mattbarber\CountdownClock;
 
-
 /**
  *
  * @author tp <https://github.com/tom-power>
  */
 interface ClockInterface
 {
+    public function getAmountOfSeconds(): int;
 
-    /**
-     * @return string clock name
-     */
-    public function getName();
+    public function getDeadlineDateTime(): \DateTime;
 
-    /**
-     * @return /DateTime deadline date and time
-     */
-    public function getDeadlineDateTime();
+    public function getTimezone(): string;
 
-    /**
-     * @return string time zone
-     */
-    public function getTimezone();
+    public function getSeparator(): string;
 
-    /**
-     * @return string symbol between countdown date elements
-     */
-    public function getSeparator();
+    public function getSeparatorSpacing(): int;
 
-    /**
-     * @return integer spacing between symbol between countdown date elements
-     */
-    public function getSeparatorSpacing();
+    public function getDaysLen(): int;
 
-    /**
-     * @return integer length of days countdown date element
-     */
-    public function getDaysLen();
+    public function getSpacing(): int;
 
-    /**
-     * @return integer spacing between characters
-     */
-    public function getSpacing();
+    public function getFontFilePath(): string;
 
-    /**
-     * @return string font file path
-     */
-    public function getFontFilePath();
+    public function getFontSize(): int;
 
-    /**
-     * @return integer size of font
-     */
-    public function getFontSize();
+    public function getPaddingHorizontal(): int;
 
-    /**
-     * @return integer font start x
-     */
-    public function getPaddingHorizontal();
+    public function getPaddingVertical(): int;
 
-    /**
-     * @return integer font start y
-     */
-    public function getPaddingVertical();
+    public function getFontAngle(): int;
+
+    public function getBackgroundImageFilePath(): ?string;
 
     /**
      * @return array [red, green, blue]
      */
-    public function getFontColor();
+    public function getFontColor(): array;
 
     /**
-     * @return integer font angle
+     * Used if `getBackgroundImageFilePath()` returns false
+     * @return array|false [red, green, blue]
      */
-    public function getFontAngle();
-
-    /**
-     * @return string background image file path (set to boolean false to use color)
-     */
-    public function getBackgroundImageFilePath();
-
-    /**
-     * @return array [r, g, b] integer array if getBackgroundImageFilePath returns false 
-     *
-     */
-    public function getBackgroundImageColor();
+    public function getBackgroundImageColor(): array;
 }
