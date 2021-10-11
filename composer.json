@@ -19,13 +19,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "mattbarber\\CountdownClock\\": "src/",
-            "mattbarber\\Example\\": "example/"
+            "Mattbarber\\CountdownClock\\": "src/",
+            "Mattbarber\\Example\\": "example/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "mattbarber\\CountdownClock\\Tests\\": "tests/"
+            "Mattbarber\\CountdownClock\\Tests\\": "tests/"
         }
     }
 }
