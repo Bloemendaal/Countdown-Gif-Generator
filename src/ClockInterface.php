@@ -1,13 +1,14 @@
 <?php
 
-namespace mattbarber\CountdownClock;
+namespace Mattbarber\CountdownClock;
 
 
 /**
  *
  * @author tp <https://github.com/tom-power>
  */
-interface ClockInterface {
+interface ClockInterface
+{
 
     /**
      * @return string clock name
@@ -17,7 +18,7 @@ interface ClockInterface {
     /**
      * @return /DateTime deadline date and time
      */
-    public function getdeadlineDateTime();
+    public function getDeadlineDateTime();
 
     /**
      * @return string time zone
@@ -94,5 +95,4 @@ interface ClockInterface {
      *
      */
     public function getBackgroundImageColor();
-
 }
