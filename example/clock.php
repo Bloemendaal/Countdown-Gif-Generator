@@ -2,14 +2,16 @@
 
 //namespace mattbarber\Example;
 include '../vendor/autoload.php';
-use mattbarber\CountdownClock\Clock;
-use mattbarber\CountdownClock\ClockInterface;
+
+use Mattbarber\CountdownClock\Clock;
+use Mattbarber\CountdownClock\ClockInterface;
 
 /**
  * Example class to inject into the countdown clock
  * Implements ClockInterface
-**/
-class MyClock implements ClockInterface {
+ **/
+class MyClock implements ClockInterface
+{
 
     /**
      * @return string clock name
@@ -22,7 +24,7 @@ class MyClock implements ClockInterface {
     /**
      * @return /DateTime deadline date and time
      */
-    public function getdeadlineDateTime()
+    public function getDeadlineDateTime()
     {
         return DateTime::createFromFormat('d/m/Y H:i:s', "31/12/2017 00:00:01");
     }
@@ -100,27 +102,11 @@ class MyClock implements ClockInterface {
     }
 
     /**
-     * @return integer font red
+     * @return array [r, g, b]
      */
-    public function getFontr()
+    public function getFontColor()
     {
-        return 120;
-    }
-
-    /**
-     * @return integer font green
-     */
-    public function getFontg()
-    {
-        return 0;
-    }
-
-    /**
-     * @return integer font blue
-     */
-    public function getFontb()
-    {
-        return 0;
+        return [120, 0, 0];
     }
 
     /**
@@ -147,7 +133,6 @@ class MyClock implements ClockInterface {
     {
         return [200, 255, 255];
     }
-
 }
 
 
