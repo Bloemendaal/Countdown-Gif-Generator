@@ -1,6 +1,6 @@
 <?php
 
-namespace mattbarber\CountdownClock;
+namespace Mattbarber\CountdownClock;
 
 
 /*
@@ -31,7 +31,8 @@ namespace mattbarber\CountdownClock;
 /**
  * Encode animated gifs
  */
-class AnimatedGif {
+class AnimatedGif
+{
 
     /**
      * The built gif image
@@ -43,7 +44,7 @@ class AnimatedGif {
      * The array of images to stack
      * @var array
      */
-    private $buffer = Array();
+    private $buffer = [];
 
     /**
      * How many times to loop? 0 = infinite
@@ -78,7 +79,8 @@ class AnimatedGif {
      * @param int $transparent_colour_green
      * @param int $transparent_colour_blue
      */
-    function __construct(array $source_images, array $image_delays, $number_of_loops, $transparent_colour_red = -1, $transparent_colour_green = -1, $transparent_colour_blue = -1) {
+    function __construct(array $source_images, array $image_delays, $number_of_loops, $transparent_colour_red = -1, $transparent_colour_green = -1, $transparent_colour_blue = -1)
+    {
         /**
          * I have no idea what these even do, they appear to do nothing to the image so far
          */
@@ -86,13 +88,13 @@ class AnimatedGif {
         $transparent_colour_green = 0;
         $transparent_colour_blue = 0;
 
-        $this->number_of_loops = ( $number_of_loops > -1 ) ? $number_of_loops : 0;
+        $this->number_of_loops = ($number_of_loops > -1) ? $number_of_loops : 0;
         $this->set_transparent_colour($transparent_colour_red, $transparent_colour_green, $transparent_colour_blue);
         $this->buffer_images($source_images);
 
         $this->addHeader();
         for ($i = 0; $i < count($this->buffer); $i++) {
-            $this->addFrame($i, $image_delays [$i]);
+            $this->addFrame($i, $image_delays[$i]);
         }
     }
 
@@ -102,9 +104,10 @@ class AnimatedGif {
      * @param int $green
      * @param int $blue
      */
-    private function set_transparent_colour($red, $green, $blue){
-        $this->transparent_colour = ( $red > -1 && $green > -1 && $blue > -1 ) ?
-                ( $red | ( $green << 8 ) | ( $blue << 16 ) ) : -1;
+    private function set_transparent_colour($red, $green, $blue)
+    {
+        $this->transparent_colour = ($red > -1 && $green > -1 && $blue > -1) ?
+            ($red | ($green << 8) | ($blue << 16)) : -1;
     }
 
     /**
@@ -112,17 +115,18 @@ class AnimatedGif {
      * @param array $source_images the array of source images
      * @throws Exception
      */
-    private function buffer_images($source_images) {
+    private function buffer_images($source_images)
+    {
         for ($i = 0; $i < count($source_images); $i++) {
-            $this->buffer [] = $source_images [$i];
-            if (substr($this->buffer [$i], 0, 6) != "GIF87a" && substr($this->buffer [$i], 0, 6) != "GIF89a") {
-                throw new Exception('Image at position ' . $i. ' is not a gif');
+            $this->buffer[] = $source_images[$i];
+            if (substr($this->buffer[$i], 0, 6) != "GIF87a" && substr($this->buffer[$i], 0, 6) != "GIF89a") {
+                throw new \Exception('Image at position ' . $i . ' is not a gif');
             }
-            for ($j = ( 13 + 3 * ( 2 << ( ord($this->buffer [$i] { 10 }) & 0x07 ) ) ), $k = TRUE; $k; $j++) {
-                switch ($this->buffer [$i] { $j }) {
+            for ($j = (13 + 3 * (2 << (ord($this->buffer[$i][10]) & 0x07))), $k = TRUE; $k; $j++) {
+                switch ($this->buffer[$i][$j]) {
                     case "!":
-                        if (( substr($this->buffer [$i], ( $j + 3), 8) ) == "NETSCAPE") {
-                            throw new Exception('You cannot make an animation from an animated gif.');
+                        if ((substr($this->buffer[$i], ($j + 3), 8)) == "NETSCAPE") {
+                            throw new \Exception('You cannot make an animation from an animated gif.');
                         }
                         break;
                     case ";":
@@ -136,13 +140,14 @@ class AnimatedGif {
     /**
      * Add the gif header to the image
      */
-    private function addHeader() {
+    private function addHeader()
+    {
         $cmap = 0;
         $this->image = 'GIF89a';
-        if (ord($this->buffer [0] { 10 }) & 0x80) {
-            $cmap = 3 * ( 2 << ( ord($this->buffer [0] { 10 }) & 0x07 ) );
-            $this->image .= substr($this->buffer [0], 6, 7);
-            $this->image .= substr($this->buffer [0], 13, $cmap);
+        if (ord($this->buffer[0][10]) & 0x80) {
+            $cmap = 3 * (2 << (ord($this->buffer[0][10]) & 0x07));
+            $this->image .= substr($this->buffer[0], 6, 7);
+            $this->image .= substr($this->buffer[0], 13, $cmap);
             $this->image .= "!\377\13NETSCAPE2.0\3\1" . $this->word($this->number_of_loops) . "\0";
         }
     }
@@ -152,35 +157,36 @@ class AnimatedGif {
      * @param int $frame The frame to be added
      * @param int $delay The delay associated with the frame
      */
-    private function addFrame($frame, $delay) {
-        $Locals_str = 13 + 3 * ( 2 << ( ord($this->buffer [$frame] { 10 }) & 0x07 ) );
+    private function addFrame($frame, $delay)
+    {
+        $Locals_str = 13 + 3 * (2 << (ord($this->buffer[$frame][10]) & 0x07));
 
-        $Locals_end = strlen($this->buffer [$frame]) - $Locals_str - 1;
-        $Locals_tmp = substr($this->buffer [$frame], $Locals_str, $Locals_end);
+        $Locals_end = strlen($this->buffer[$frame]) - $Locals_str - 1;
+        $Locals_tmp = substr($this->buffer[$frame], $Locals_str, $Locals_end);
 
-        $Global_len = 2 << ( ord($this->buffer [0] { 10 }) & 0x07 );
-        $Locals_len = 2 << ( ord($this->buffer [$frame] { 10 }) & 0x07 );
+        $Global_len = 2 << (ord($this->buffer[0][10]) & 0x07);
+        $Locals_len = 2 << (ord($this->buffer[$frame][10]) & 0x07);
 
-        $Global_rgb = substr($this->buffer [0], 13, 3 * ( 2 << ( ord($this->buffer [0] { 10 }) & 0x07 ) ));
-        $Locals_rgb = substr($this->buffer [$frame], 13, 3 * ( 2 << ( ord($this->buffer [$frame] { 10 }) & 0x07 ) ));
+        $Global_rgb = substr($this->buffer[0], 13, 3 * (2 << (ord($this->buffer[0][10]) & 0x07)));
+        $Locals_rgb = substr($this->buffer[$frame], 13, 3 * (2 << (ord($this->buffer[$frame][10]) & 0x07)));
 
-        $Locals_ext = "!\xF9\x04" . chr(( $this->DIS << 2 ) + 0) .
-                chr(( $delay >> 0 ) & 0xFF) . chr(( $delay >> 8 ) & 0xFF) . "\x0\x0";
+        $Locals_ext = "!\xF9\x04" . chr(($this->DIS << 2) + 0) .
+            chr(($delay >> 0) & 0xFF) . chr(($delay >> 8) & 0xFF) . "\x0\x0";
 
-        if ($this->transparent_colour > -1 && ord($this->buffer [$frame] { 10 }) & 0x80) {
-            for ($j = 0; $j < ( 2 << ( ord($this->buffer [$frame] { 10 }) & 0x07 ) ); $j++) {
+        if ($this->transparent_colour > -1 && ord($this->buffer[$frame][10]) & 0x80) {
+            for ($j = 0; $j < (2 << (ord($this->buffer[$frame][10]) & 0x07)); $j++) {
                 if (
-                        ord($Locals_rgb { 3 * $j + 0 }) == ( ( $this->transparent_colour >> 16 ) & 0xFF ) &&
-                        ord($Locals_rgb { 3 * $j + 1 }) == ( ( $this->transparent_colour >> 8 ) & 0xFF ) &&
-                        ord($Locals_rgb { 3 * $j + 2 }) == ( ( $this->transparent_colour >> 0 ) & 0xFF )
+                    ord($Locals_rgb[3 * $j + 0]) == (($this->transparent_colour >> 16) & 0xFF) &&
+                    ord($Locals_rgb[3 * $j + 1]) == (($this->transparent_colour >> 8) & 0xFF) &&
+                    ord($Locals_rgb[3 * $j + 2]) == (($this->transparent_colour >> 0) & 0xFF)
                 ) {
-                    $Locals_ext = "!\xF9\x04" . chr(( $this->DIS << 2 ) + 1) .
-                            chr(( $delay >> 0 ) & 0xFF) . chr(( $delay >> 8 ) & 0xFF) . chr($j) . "\x0";
+                    $Locals_ext = "!\xF9\x04" . chr(($this->DIS << 2) + 1) .
+                        chr(($delay >> 0) & 0xFF) . chr(($delay >> 8) & 0xFF) . chr($j) . "\x0";
                     break;
                 }
             }
         }
-        switch ($Locals_tmp { 0 }) {
+        switch ($Locals_tmp[0]) {
             case "!":
                 $Locals_img = substr($Locals_tmp, 8, 10);
                 $Locals_tmp = substr($Locals_tmp, 18, strlen($Locals_tmp) - 18);
@@ -190,28 +196,28 @@ class AnimatedGif {
                 $Locals_tmp = substr($Locals_tmp, 10, strlen($Locals_tmp) - 10);
                 break;
         }
-        if (ord($this->buffer [$frame] { 10 }) & 0x80 && $this->first_frame === FALSE) {
+        if (ord($this->buffer[$frame][10]) & 0x80 && $this->first_frame === FALSE) {
             if ($Global_len == $Locals_len) {
                 if ($this->blockCompare($Global_rgb, $Locals_rgb, $Global_len)) {
-                    $this->image .= ( $Locals_ext . $Locals_img . $Locals_tmp );
+                    $this->image .= ($Locals_ext . $Locals_img . $Locals_tmp);
                 } else {
-                    $byte = ord($Locals_img { 9 });
+                    $byte = ord($Locals_img[9]);
                     $byte |= 0x80;
                     $byte &= 0xF8;
-                    $byte |= ( ord($this->buffer [0] { 10 }) & 0x07 );
-                    $Locals_img { 9 } = chr($byte);
-                    $this->image .= ( $Locals_ext . $Locals_img . $Locals_rgb . $Locals_tmp );
+                    $byte |= (ord($this->buffer[0][10]) & 0x07);
+                    $Locals_img[9] = chr($byte);
+                    $this->image .= ($Locals_ext . $Locals_img . $Locals_rgb . $Locals_tmp);
                 }
             } else {
-                $byte = ord($Locals_img { 9 });
+                $byte = ord($Locals_img[9]);
                 $byte |= 0x80;
                 $byte &= 0xF8;
-                $byte |= ( ord($this->buffer [$frame] { 10 }) & 0x07 );
-                $Locals_img { 9 } = chr($byte);
-                $this->image .= ( $Locals_ext . $Locals_img . $Locals_rgb . $Locals_tmp );
+                $byte |= (ord($this->buffer[$frame][10]) & 0x07);
+                $Locals_img[9] = chr($byte);
+                $this->image .= ($Locals_ext . $Locals_img . $Locals_rgb . $Locals_tmp);
             }
         } else {
-            $this->image .= ( $Locals_ext . $Locals_img . $Locals_tmp );
+            $this->image .= ($Locals_ext . $Locals_img . $Locals_tmp);
         }
         $this->first_frame = FALSE;
     }
@@ -219,29 +225,31 @@ class AnimatedGif {
     /**
      * Add the gif footer
      */
-    private function addFooter() {
+    private function addFooter()
+    {
         $this->image .= ";";
     }
 
     /**
      * Compare gif blocks? What is a block?
-     * @param type $GlobalBlock
-     * @param type $LocalBlock
-     * @param type $Len
+     * @param type $globalBlock
+     * @param type $localBlock
+     * @param type $len
      * @return type
      */
-    private function blockCompare($GlobalBlock, $LocalBlock, $Len) {
-        for ($i = 0; $i < $Len; $i++) {
+    private function blockCompare($globalBlock, $localBlock, $len)
+    {
+        for ($i = 0; $i < $len; $i++) {
             if (
-                    $GlobalBlock { 3 * $i + 0 } != $LocalBlock { 3 * $i + 0 } ||
-                    $GlobalBlock { 3 * $i + 1 } != $LocalBlock { 3 * $i + 1 } ||
-                    $GlobalBlock { 3 * $i + 2 } != $LocalBlock { 3 * $i + 2 }
+                $globalBlock[3 * $i + 0] != $localBlock[3 * $i + 0] ||
+                $globalBlock[3 * $i + 1] != $localBlock[3 * $i + 1] ||
+                $globalBlock[3 * $i + 2] != $localBlock[3 * $i + 2]
             ) {
-                return ( 0 );
+                return (0);
             }
         }
 
-        return ( 1 );
+        return (1);
     }
 
     /**
@@ -249,15 +257,17 @@ class AnimatedGif {
      * @param int $int
      * @return string the char you meant?
      */
-    private function word($int) {
-        return ( chr($int & 0xFF) . chr(( $int >> 8 ) & 0xFF) );
+    private function word($int)
+    {
+        return (chr($int & 0xFF) . chr(($int >> 8) & 0xFF));
     }
 
     /**
      * Return the animated gif
      * @return type
      */
-    function getAnimation() {
+    function getAnimation()
+    {
         return $this->image;
     }
 
@@ -265,11 +275,11 @@ class AnimatedGif {
      * Return the animated gif
      * @return type
      */
-    function display() {
+    function display()
+    {
         //late footer add
         $this->addFooter();
         header('Content-type:image/gif');
         echo $this->image;
     }
-
 }
