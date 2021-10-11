@@ -102,8 +102,9 @@ class Clock
      *
      * @param char $char
      **/
-    private function getHeight($char, $offset = 0): int
+    private function getHeight($offset = 0): int
     {
+        $char = '0123456789' . $this->clock->getSeparator();
         $bbox = imagettfbbox($this->clock->getFontSize() + $offset * 2, $this->clock->getFontAngle(), $this->clock->getFontFilePath(), $char);
         return $bbox[1] - $bbox[7];
     }
@@ -155,7 +156,7 @@ class Clock
                     - the spacing lost because of the separators
                 */
                 $width = (($this->fixedWidth + $this->clock->getSpacing()) * strlen($text)) + (($this->clock->getSeparatorSpacing() - $this->clock->getSpacing()) * 6) + $this->clock->getPaddingHorizontal() * 2;
-                $image = @imagecreate($width, $this->getHeight($text, $this->clock->getPaddingVertical()))
+                $image = @imagecreate($width, $this->getHeight($this->clock->getPaddingVertical()))
                     or die("Cannot Initialize new GD image stream");
                 $bg = $this->clock->getBackgroundImageColor();
                 imagefill($image, 0, 0, imagecolorallocate($image, $bg[0], $bg[1], $bg[2]));
@@ -168,7 +169,6 @@ class Clock
                 $image,
                 $this->clock->getFontSize(),
                 $this->clock->getFontAngle(),
-                $this->clock->getPaddingHorizontal(),
                 imagecolorallocate($image, $fontColors[0], $fontColors[1], $fontColors[2]),
                 $this->clock->getFontFilePath(),
                 $text,
@@ -207,7 +207,6 @@ class Clock
      * @param \GdImage  $image              The image resource we are creating the text on
      * @param float     $size               The font size
      * @param float     $angle              The angle in degrees
-     * @param int       $x                  The base point of the first character
      * @param int       $colour             The colour for the layer being painted
      * @param string    $font               The font file path
      * @param string    $text               The base text string
@@ -216,21 +215,21 @@ class Clock
      * @param int       $separatorSpacing   The spacing around the separator
      *
      **/
-    function imagettftextSp($image, $size, $angle, $x, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0): void
+    private function imagettftextSp($image, $size, $angle, $color, $font, $text, $spacing = 0, $separator = null, $separatorSpacing = 0): void
     {
-        $y = round(imagesy($image) / 2 + $this->getHeight('0123456789' . $this->clock->getSeparator()) / 2) - 1;
+        $x = $this->clock->getPaddingHorizontal();
+        $y = round(imagesy($image) / 2 + $this->getHeight() / 2) - 1;
 
-        $thisX = $x;
         foreach (str_split($text) as $i => $char) {
             // increment x by the offset for the given character
-            $thisX += $this->offsets[$char];
+            $x += $this->offsets[$char];
             // then write that specific character to the image
-            imagettftext($image, $size, $angle, $thisX, $y, $color, $font, $char);
+            imagettftext($image, $size, $angle, $x, $y, $color, $font, $char);
             //  remove the offset
-            $thisX -= $this->offsets[$char];
+            $x -= $this->offsets[$char];
             // then space by fixed width, plus any additional spacing
             $thisSpacing = $this->isSeperatorSpacing($text, $i, $separator) ? $separatorSpacing : $spacing;
-            $thisX += $thisSpacing + $this->fixedWidth;
+            $x += $thisSpacing + $this->fixedWidth;
         }
     }
 
@@ -241,7 +240,7 @@ class Clock
      * @param int       $i          The current index
      * @param char      $separator  The separator symbol
      **/
-    function isSeperatorSpacing($text, $i, $separator): bool
+    private function isSeperatorSpacing($text, $i, $separator): bool
     {
         return $this->getNextChar($text, $i) === $separator || $text[$i] === $separator;
     }
@@ -254,7 +253,7 @@ class Clock
      *
      * @return char
      **/
-    function getNextChar($text, $i): ?string
+    private function getNextChar($text, $i): ?string
     {
         return $i + 1 < strlen($text) ? $text[$i + 1] : null;
     }
