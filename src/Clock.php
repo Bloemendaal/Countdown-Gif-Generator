@@ -162,6 +162,8 @@ class Clock
                 imagefill($image, 0, 0, imagecolorallocate($image, $bg[0], $bg[1], $bg[2]));
             }
 
+            $fontColors = $this->clock->getFontColor();
+
             //overlay the text on this resource
             $this->imagettftextSp(
                 $image,
@@ -169,7 +171,7 @@ class Clock
                 $this->clock->getFontangle(),
                 $this->clock->getFontx(),
                 $this->clock->getFonty(),
-                imagecolorallocate($image, $this->clock->getFontr(), $this->clock->getFontg(), $this->clock->getFontb()),
+                imagecolorallocate($image, $fontColors[0], $fontColors[1], $fontColors[2]),
                 $this->clock->getFontFilePath(),
                 $text,
                 $this->clock->getSpacing(),
