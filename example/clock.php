@@ -16,23 +16,23 @@ class MyClock implements ClockInterface
     /**
      * @return string clock name
      */
-    public function getName()
+    public function getAmountOfSeconds(): int
     {
-        return "My Super Clock";
+        return 60;
     }
 
     /**
      * @return /DateTime deadline date and time
      */
-    public function getDeadlineDateTime()
+    public function getDeadlineDateTime(): \DateTime
     {
-        return DateTime::createFromFormat('d/m/Y H:i:s', "31/12/2017 00:00:01");
+        return \DateTime::createFromFormat('d/m/Y H:i:s', "31/12/2017 00:00:01");
     }
 
     /**
      * @return string time zone
      */
-    public function getTimezone()
+    public function getTimezone(): string
     {
         return "Europe/London";
     }
@@ -40,7 +40,7 @@ class MyClock implements ClockInterface
     /**
      * @return string symbol between countdown date elements
      */
-    public function getSeparator()
+    public function getSeparator(): string
     {
         return "|";
     }
@@ -48,7 +48,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer spacing between symbol between countdown date elements
      */
-    public function getSeparatorSpacing()
+    public function getSeparatorSpacing(): int
     {
         return 8;
     }
@@ -56,7 +56,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer length of days countdown date element
      */
-    public function getDaysLen()
+    public function getDaysLen(): int
     {
         return 2;
     }
@@ -64,7 +64,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer spacing between characters
      */
-    public function getSpacing()
+    public function getSpacing(): int
     {
         return 2;
     }
@@ -72,7 +72,7 @@ class MyClock implements ClockInterface
     /**
      * @return string font file path
      */
-    public function getFontFilePath()
+    public function getFontFilePath(): string
     {
         return "/Library/Fonts/Verdana.ttf";
     }
@@ -80,7 +80,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer size of font
      */
-    public function getFontsize()
+    public function getFontSize(): int
     {
         return 20;
     }
@@ -88,7 +88,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer font start x
      */
-    public function getFontx()
+    public function getPaddingHorizontal(): int
     {
         return 25;
     }
@@ -96,7 +96,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer font start y
      */
-    public function getFonty()
+    public function getPaddingVertical(): int
     {
         return 25;
     }
@@ -104,7 +104,7 @@ class MyClock implements ClockInterface
     /**
      * @return array [r, g, b]
      */
-    public function getFontColor()
+    public function getFontColor(): array
     {
         return [120, 0, 0];
     }
@@ -112,7 +112,7 @@ class MyClock implements ClockInterface
     /**
      * @return integer font angle
      */
-    public function getFontangle()
+    public function getFontAngle(): int
     {
         return 0;
     }
@@ -120,16 +120,16 @@ class MyClock implements ClockInterface
     /**
      * @return string background image file path
      */
-    public function getBackgroundImageFilePath()
+    public function getBackgroundImageFilePath(): ?string
     {
-        return false;
+        return null;
     }
 
     /**
      * @return array [r, g, b] integer array if getBackgroundImageFilePath returns false
      *
      */
-    public function getBackgroundImageColor()
+    public function getBackgroundImageColor(): array
     {
         return [200, 255, 255];
     }
